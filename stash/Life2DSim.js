@@ -354,10 +354,11 @@ class Life2DSimulator {
 	{
 		for (let n = 0; n < this.lives.length; n++) {
 			// Height along with field level
+			let h = this.bilinear(this.lives[n].position.x, this.lives[n].position.y);
 			let xyz = this.calcView(
 			    this.lives[n].position.x,
 			    this.lives[n].position.y,
-			    this.bilinear(this.lives[n].position.x, this.lives[n].position.y),
+			    h,
 			    this.displayOffset,
 			    this.camera);
 			if (xyz.x < 0 || this.canvas.width < xyz.x ||
@@ -374,7 +375,7 @@ class Life2DSimulator {
 			let xyz_tmp = this.calcView(
 			    this.lives[n].position.x + 10 * Math.cos(dir),
 			    this.lives[n].position.y + 10 * Math.sin(dir),
-			    0,
+			    h,
 			    this.displayOffset,
 			    this.camera);
 			this.context.strokeStyle = "rgb(255, 0, 0)";
@@ -390,7 +391,7 @@ class Life2DSimulator {
 			xyz_tmp = this.calcView(
 			    this.lives[n].position.x + this.lives[n].viewRange * Math.cos(dir),
 			    this.lives[n].position.y + this.lives[n].viewRange * Math.sin(dir),
-			    0,
+			    h,
 			    this.displayOffset,
 			    this.camera);
 			this.context.moveTo(xyz.x, xyz.y);
@@ -401,7 +402,7 @@ class Life2DSimulator {
 			xyz_tmp = this.calcView(
 			    this.lives[n].position.x + this.lives[n].viewRange * Math.cos(dir),
 			    this.lives[n].position.y + this.lives[n].viewRange * Math.sin(dir),
-			    0,
+			    h,
 			    this.displayOffset,
 			    this.camera);
 			this.context.moveTo(xyz.x, xyz.y);
