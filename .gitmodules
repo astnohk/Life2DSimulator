@@ -1,0 +1,3 @@
+[submodule "lib/ECMASystem7"]
+	path = lib/ECMASystem7
+	url = https://github.com/astnohk/ECMASystem7.git
