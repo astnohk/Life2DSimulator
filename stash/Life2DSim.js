@@ -247,12 +247,12 @@ class Life2DSimulator {
 			if (this.lives[n].position.x < 0) {
 				this.lives[n].position.x = 0;
 			} else if (this.lives[n].position.x > this.fieldSize) {
-				this.lives[n].position.x = this.fieldSize;
+				this.lives[n].position.x = this.fieldSize - 1;
 			}
 			if (this.lives[n].position.y < 0) {
 				this.lives[n].position.y = 0;
 			} else if (this.lives[n].position.y > this.fieldSize) {
-				this.lives[n].position.y = this.fieldSize;
+				this.lives[n].position.y = this.fieldSize - 1;
 			}
 			for (let k = 0; k < this.lives.length; k++) {
 				if (n == k) {
@@ -353,10 +353,11 @@ class Life2DSimulator {
 	drawLives()
 	{
 		for (let n = 0; n < this.lives.length; n++) {
+			// Height along with field level
 			let xyz = this.calcView(
 			    this.lives[n].position.x,
 			    this.lives[n].position.y,
-			    0,
+			    this.bilinear(this.lives[n].position.x, this.lives[n].position.y),
 			    this.displayOffset,
 			    this.camera);
 			if (xyz.x < 0 || this.canvas.width < xyz.x ||
@@ -871,6 +872,34 @@ class Life2DSimulator {
 		if (increase) {
 			this.initGalaxy();
 		}
+	}
+
+	bilinear(x, y)
+	{
+		if (x < 0) {
+			x = 0;
+		} else if (x >= this.fieldSize - 1) {
+			x = this.fieldSize - 1;
+		}
+		if (y < 0) {
+			y = 0;
+		} else if (y >= this.fieldSize - 1) {
+			y = this.fieldSize - 1;
+		}
+		let x_f = Math.floor(x);
+		let y_f = Math.floor(y);
+		if (x_f >= this.fieldSize - 1) {
+			x_f = this.fieldSize - 2;
+		}
+		if (y_f >= this.fieldSize - 1) {
+			y_f = this.fieldSize - 2;
+		}
+		let f0 = this.field[this.fieldSize * y_f + x_f].level;
+		let f1 = this.field[this.fieldSize * y_f + (x_f + 1)].level;
+		let f2 = this.field[this.fieldSize * (y_f + 1) + x_f].level;
+		let f3 = this.field[this.fieldSize * (y_f + 1) + (x_f + 1)].level;
+		return (f0 + (f1 - f0) * (x - x_f)) * (1 - y + y_f) +
+		    (f2 + (f3 - f2) * (x - x_f)) * (y - y_f);
 	}
 }
 
