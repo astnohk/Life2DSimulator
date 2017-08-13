@@ -143,7 +143,7 @@ class Life2DSimulator {
 
 		var lifeNumChangerLabel = document.createElement("div");
 		lifeNumChangerLabel.innerHTML = "life";
-		lifeNumChangerLabel.id = "Life2DSimulatorParticleNumChangerLabel";
+		lifeNumChangerLabel.id = "Life2DSimulatorLifeNumChangerLabel";
 		lifeNumChangerLabel.className = "Life2DSimulatorInputLabel";
 		this.rootWindow.appendChild(lifeNumChangerLabel);
 		this.lifeNumChanger = document.createElement("input");
@@ -151,7 +151,7 @@ class Life2DSimulator {
 		this.lifeNumChanger.type = "text";
 		this.lifeNumChanger.inputmode = "numeric";
 		this.lifeNumChanger.value = this.lifeNum;
-		this.lifeNumChanger.id = "Life2DSimulatorParticleNumChanger";
+		this.lifeNumChanger.id = "Life2DSimulatorLifeNumChanger";
 		this.lifeNumChanger.className = "Life2DSimulatorInput";
 		this.lifeNumChanger.addEventListener("change", function (e) { e.preventDefault(); e.currentTarget.rootInstance.lifeNumChangeInvoked = true; }, false);
 		this.rootWindow.appendChild(this.lifeNumChanger);

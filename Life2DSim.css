@@ -13,14 +13,6 @@
 	outline-color: rgb(255, 0, 0);
 }
 
-#Life2DSimulatorMenu {
-	position: absolute;
-	top: 70px;
-	left: 80px;
-	border: 0;
-	background-color: rgba(0, 0, 0, 0.3);
-}
-
 #Life2DSimulatorMainPool {
 	position: absolute;
 	top: 0px;
@@ -40,42 +32,15 @@
 	cursor: pointer;
 }
 
-#Life2DSimulatorOverWritingButton {
-	position: absolute;
-	top: 48px;
-	right: 0;
-	color: rgb(250, 250, 250);
-	background-color: rgba(0, 0, 0, 0.7);
-	border-style: solid;
-	border-width: 2px;
-	border-color: rgba(250, 250, 250, 0.7);
-	font-size: 18px;
-	cursor: pointer;
-}
-
-#Life2DSimulatorParticleNumChanger {
+#Life2DSimulatorLifeNumChanger {
 	top: 100px;
 	color: rgb(250, 250, 250);
 	background-color: rgba(0, 0, 0, 0.7);
 	font-size: 18px;
 }
 
-#Life2DSimulatorParticleNumChangerLabel {
+#Life2DSimulatorLifeNumChangerLabel {
 	top: 100px;
-	color: rgb(250, 250, 250);
-	background-color: rgba(0, 0, 0, 0.7);
-	font-size: 15px;
-}
-
-#Life2DSimulatorBHNumChanger {
-	top: 130px;
-	color: rgb(250, 250, 250);
-	background-color: rgba(0, 0, 0, 0.7);
-	font-size: 18px;
-}
-
-#Life2DSimulatorBHNumChangerLabel {
-	top: 130px;
 	color: rgb(250, 250, 250);
 	background-color: rgba(0, 0, 0, 0.7);
 	font-size: 15px;
