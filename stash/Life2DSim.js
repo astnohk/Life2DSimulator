@@ -279,10 +279,10 @@ class Life2DSimulator {
 				let dir_tmp = Math.atan2(d.y, d.x);
 				if (dist < this.lives[n].viewRange &&
 				    Math.abs(this.circSub(dir_tmp, dir)) < this.lives[n].viewAngle * 0.5) {
-					dir_next += Math.sign(this.circSub(dir, dir_tmp)) * Math.random() * 0.1;
+					dir_next += Math.sign(this.circSub(dir, dir_tmp)) * Math.random() * 0.3;
 				}
 			}
-			this.lives[n].direction += dir_next;
+			this.lives[n].direction += dir_next + (Math.random() - 0.5) * 0.03 * Math.PI;
 			if (this.lives[n].direction < Math.PI) {
 				this.lives[n].direction += 2.0 * Math.PI;
 			} else if (this.lives[n].direction > Math.PI) {
