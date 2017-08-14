@@ -168,16 +168,28 @@ class Life2DSimulator {
 
 	initLives() {
 		for (let n = 0; n < this.lives.length; n++) {
+			let r = Math.floor(Math.random() * 255);
+			let g = Math.floor(Math.random() * 255);
+			let b = Math.floor(Math.random() * 255);
 			this.lives[n] = {
-				type: Math.floor(Math.random() * this.lifeTypes),
-				color: "rgb(255, 0, 100)",
 				position: {x: Math.random() * this.fieldSize, y: Math.random() * this.fieldSize},
 				direction: Math.random() * 2.0 * Math.PI,
+				type: Math.floor(Math.random() * this.lifeTypes),
+				color: "rgb(" + r + "," + g + "," + b + ")",
 				viewRPosition: Math.random() * 2.0 * Math.PI,
 				viewLPosition: Math.random() * 2.0 * Math.PI,
-				viewAngle: Math.random() * Math.PI,
-				viewRange: Math.random() * this.lifeViewRangeMax
+				viewAngle: (0.1 + Math.random()) * 0.91 * Math.PI,
+				viewRange: Math.random() * this.lifeViewRangeMax,
+				gene: []
 			};
+			this.lives[n].gene[0] = this.lives[n].type;
+			this.lives[n].gene[1] = r;
+			this.lives[n].gene[2] = g;
+			this.lives[n].gene[3] = b;
+			this.lives[n].gene[4] = this.lives[n].viewRPosition;
+			this.lives[n].gene[5] = this.lives[n].viewLPosition;
+			this.lives[n].gene[6] = this.lives[n].viewAngle;
+			this.lives[n].gene[7] = this.lives[n].viewRange;
 		}
 	}
 
@@ -241,6 +253,7 @@ class Life2DSimulator {
 	{
 		for (let n = 0; n < this.lives.length; n++) {
 			let dir = this.lives[n].direction;
+			let dir_next = 0;
 			let v = Math.random() * 0.5;
 			this.lives[n].position.x += v * Math.cos(dir);
 			this.lives[n].position.y += v * Math.sin(dir);
@@ -264,11 +277,28 @@ class Life2DSimulator {
 				}
 				let dist = Math.sqrt(d.x * d.x + d.y * d.y);
 				let dir_tmp = Math.atan2(d.y, d.x);
+				if (dist < this.lives[n].viewRange &&
+				    Math.abs(this.circSub(dir_tmp, dir)) < this.lives[n].viewAngle * 0.5) {
+					dir_next += Math.sign(this.circSub(dir, dir_tmp)) * Math.random() * 0.1;
+				}
 			}
-			// Random direction
-			if (Math.random() < 0.2) {
-				this.lives[n].direction += (Math.random() - 0.5) * 0.2 * Math.PI;
+			this.lives[n].direction += dir_next;
+			if (this.lives[n].direction < Math.PI) {
+				this.lives[n].direction += 2.0 * Math.PI;
+			} else if (this.lives[n].direction > Math.PI) {
+				this.lives[n].direction -= 2.0 * Math.PI;
 			}
+		}
+	}
+
+	circSub(a, b)
+	{
+		let d = a - b;
+		let d_alt = a - (b + Math.sign(a) * 2.0 * Math.PI);
+		if (Math.abs(d) < Math.abs(d_alt)) {
+			return d;
+		} else {
+			return d_alt;
 		}
 	}
 
@@ -384,9 +414,9 @@ class Life2DSimulator {
 			this.context.lineTo(xyz_tmp.x, xyz_tmp.y);
 			this.context.stroke();
 			// Draw life's sight
-			this.context.strokeStyle = "rgb(255, 255, 20)";
-			this.context.beginPath();
 			// right
+			this.context.strokeStyle = "rgb(255, 150, 255)";
+			this.context.beginPath();
 			dir = this.lives[n].direction + this.lives[n].viewRPosition;
 			xyz_tmp = this.calcView(
 			    this.lives[n].position.x + this.lives[n].viewRange * Math.cos(dir),
@@ -398,6 +428,8 @@ class Life2DSimulator {
 			this.context.lineTo(xyz_tmp.x, xyz_tmp.y);
 			this.context.stroke();
 			// left
+			this.context.strokeStyle = "rgb(255, 255, 150)";
+			this.context.beginPath();
 			dir = this.lives[n].direction + this.lives[n].viewLPosition;
 			xyz_tmp = this.calcView(
 			    this.lives[n].position.x + this.lives[n].viewRange * Math.cos(dir),
