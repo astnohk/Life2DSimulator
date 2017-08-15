@@ -414,32 +414,47 @@ class Life2DSimulator {
 			this.context.lineTo(xyz_tmp.x, xyz_tmp.y);
 			this.context.stroke();
 			// Draw life's sight
+			let thisone = this;
+			let drawSight = function (life, dir, range, origin, drawStartPoint) {
+				xyz_tmp = thisone.calcView(
+				    origin.x + range * Math.cos(dir),
+				    origin.y + range * Math.sin(dir),
+				    h,
+				    thisone.displayOffset,
+				    thisone.camera);
+				thisone.context.moveTo(drawStartPoint.x, drawStartPoint.y);
+				thisone.context.lineTo(xyz_tmp.x, xyz_tmp.y);
+			};
 			// right
 			this.context.strokeStyle = "rgb(255, 150, 255)";
-			this.context.beginPath();
 			dir = this.lives[n].direction + this.lives[n].viewRPosition;
-			xyz_tmp = this.calcView(
-			    this.lives[n].position.x + this.lives[n].viewRange * Math.cos(dir),
-			    this.lives[n].position.y + this.lives[n].viewRange * Math.sin(dir),
-			    h,
-			    this.displayOffset,
-			    this.camera);
-			this.context.moveTo(xyz.x, xyz.y);
-			this.context.lineTo(xyz_tmp.x, xyz_tmp.y);
+			this.context.beginPath();
+			drawSight(this.lives[n], dir, this.lives[n].viewRange, this.lives[n].position, xyz);
 			this.context.stroke();
+			// right angle
+			this.context.setLineDash([2, 4]);
+			this.context.beginPath();
+			for (let d = -1; d <= 1; d += 0.0625) {
+				dir = this.lives[n].direction + this.lives[n].viewRPosition + d * this.lives[n].viewAngle * 0.5;
+				drawSight(this.lives[n], dir, this.lives[n].viewRange, this.lives[n].position, xyz);
+			}
+			this.context.stroke();
+			this.context.setLineDash([]);
 			// left
 			this.context.strokeStyle = "rgb(255, 255, 150)";
-			this.context.beginPath();
 			dir = this.lives[n].direction + this.lives[n].viewLPosition;
-			xyz_tmp = this.calcView(
-			    this.lives[n].position.x + this.lives[n].viewRange * Math.cos(dir),
-			    this.lives[n].position.y + this.lives[n].viewRange * Math.sin(dir),
-			    h,
-			    this.displayOffset,
-			    this.camera);
-			this.context.moveTo(xyz.x, xyz.y);
-			this.context.lineTo(xyz_tmp.x, xyz_tmp.y);
+			this.context.beginPath();
+			drawSight(this.lives[n], dir, this.lives[n].viewRange, this.lives[n].position, xyz);
 			this.context.stroke();
+			// left angle
+			this.context.setLineDash([2, 4]);
+			this.context.beginPath();
+			for (let d = -1; d <= 1; d += 0.0625) {
+				dir = this.lives[n].direction + this.lives[n].viewLPosition + d * this.lives[n].viewAngle * 0.5;
+				drawSight(this.lives[n], dir, this.lives[n].viewRange, this.lives[n].position, xyz);
+			}
+			this.context.stroke();
+			this.context.setLineDash([]);
 		}
 	}
 
