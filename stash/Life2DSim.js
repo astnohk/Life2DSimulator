@@ -1,6 +1,18 @@
 // The code written in BSD/KNF indent style
 "use strict";
 
+class Life2DProteins {
+	constructor() {
+		this.R = 0;
+		this.G = 0;
+		this.B = 0;
+		this.viewRPosition = 0;
+		this.viewLPosition = 0;
+		this.viewAngle = 0;
+		this.viewRange = 0;
+	}
+}
+
 class Life2DSimulator {
 	constructor(windowSystemRoot, rootWindow) {
 		this.SysRoot = windowSystemRoot;
@@ -33,12 +45,15 @@ class Life2DSimulator {
 		this.fieldSize = 200;
 		this.lifeNum = 30;
 		this.lifeNumMax = 256;
+		this.lifeViewAngleMax = Math.PI;
 		this.lifeViewRangeMax = 50;
-		this.lifeTypes = 3;
 
 		this.field = new Array(this.fieldSize * this.fieldSize);
 		this.fieldDispPos = new Array(this.fieldSize * this.fieldSize);
 		this.lives = new Array(this.lifeNum);
+		this.nucleotide = ['a', 'c', 'g', 'u'];
+		this.proteins = null;
+		this.codons = null;
 
 		this.XYZ_absolute = {
 			X: {x: 1.0, y: 0.0, z: 0.0},
@@ -82,6 +97,7 @@ class Life2DSimulator {
 
 		// Set initial field
 		this.initField();
+		this.initProteins();
 		this.initLives();
 
 		// Reset display offset
@@ -166,30 +182,142 @@ class Life2DSimulator {
 		}
 	}
 
-	initLives() {
+	initProteins()
+	{
+		// Proteins
+		this.proteins.ala = new Life2DProteins();
+		this.proteins.arg = new Life2DProteins();
+		this.proteins.asn = new Life2DProteins();
+		this.proteins.asp = new Life2DProteins();
+		this.proteins.cys = new Life2DProteins();
+		this.proteins.gln = new Life2DProteins();
+		this.proteins.glu = new Life2DProteins();
+		this.proteins.gly = new Life2DProteins();
+		this.proteins.his = new Life2DProteins();
+		this.proteins.ile = new Life2DProteins();
+		this.proteins.leu = new Life2DProteins();
+		this.proteins.lys = new Life2DProteins();
+		this.proteins.met = new Life2DProteins();
+		this.proteins.phe = new Life2DProteins();
+		this.proteins.thr = new Life2DProteins();
+		this.proteins.trp = new Life2DProteins();
+		this.proteins.tyr = new Life2DProteins();
+		this.proteins.val = new Life2DProteins();
+		this.proteins.ser = new Life2DProteins();
+		this.proteins.pro = new Life2DProteins();
+		this.proteins.ala.viewRPosition = 0.02 * Math.PI;
+		this.proteins.arg.viewLPosition = 0.02 * Math.PI;
+		this.proteins.asn.viewAngle = 0.02 * Math.PI;
+		this.proteins.asp.viewRange = 10.0;
+		this.proteins.cys.viewRPosition = -0.02 * Math.PI;
+		this.proteins.gln.viewLPosition = -0.02 * Math.PI;
+		this.proteins.glu.viewAngle = -0.02 * Math.PI;
+		this.proteins.gly.viewRange = -3.0;
+		this.proteins.his.R = 10;
+		this.proteins.ile.G = 10;
+		this.proteins.leu.B = 10;
+		this.proteins.lys.R = 3;
+		this.proteins.met.G = 3;
+		this.proteins.phe.B = 3;
+		this.proteins.pro.viewAngle = 0.01 * Math.PI;
+		this.proteins.ser.viewRange = 5.0;
+		this.proteins.thr.viewRPosition = 0.01 * Math.PI;
+		this.proteins.trp.viewLPosition = 0.01 * Math.PI;
+		this.proteins.tyr.viewAngle = 0.01 * Math.PI;
+		this.proteins.val.viewRange = 1.0;
+		// Codons
+		this.codons.gca = {protein: this.proteins.ala};
+		this.codons.gcc = {protein: this.proteins.ala};
+		this.codons.gcg = {protein: this.proteins.ala};
+		this.codons.gcu = {protein: this.proteins.ala};
+		this.codons.aga = {protein: this.proteins.arg};
+		this.codons.agg = {protein: this.proteins.arg};
+		this.codons.cga = {protein: this.proteins.arg};
+		this.codons.cgc = {protein: this.proteins.arg};
+		this.codons.cgg = {protein: this.proteins.arg};
+		this.codons.cgu = {protein: this.proteins.arg};
+		this.codons.aac = {protein: this.proteins.asn};
+		this.codons.aau = {protein: this.proteins.asn};
+		this.codons.gac = {protein: this.proteins.asp};
+		this.codons.gau = {protein: this.proteins.asp};
+		this.codons.ugc = {protein: this.proteins.cys};
+		this.codons.ugu = {protein: this.proteins.cys};
+		this.codons.caa = {protein: this.proteins.gln};
+		this.codons.cag = {protein: this.proteins.gln};
+		this.codons.gaa = {protein: this.proteins.glu};
+		this.codons.gag = {protein: this.proteins.glu};
+		this.codons.gga = {protein: this.proteins.gly};
+		this.codons.ggc = {protein: this.proteins.gly};
+		this.codons.ggg = {protein: this.proteins.gly};
+		this.codons.ggu = {protein: this.proteins.gly};
+		this.codons.cac = {protein: this.proteins.his};
+		this.codons.cau = {protein: this.proteins.his};
+		this.codons.aua = {protein: this.proteins.ile, start: true};
+		this.codons.auc = {protein: this.proteins.ile};
+		this.codons.auu = {protein: this.proteins.ile};
+		this.codons.cua = {protein: this.proteins.leu};
+		this.codons.cuc = {protein: this.proteins.leu};
+		this.codons.cug = {protein: this.proteins.leu};
+		this.codons.cuu = {protein: this.proteins.leu};
+		this.codons.uua = {protein: this.proteins.leu};
+		this.codons.uug = {protein: this.proteins.leu};
+		this.codons.aaa = {protein: this.proteins.lys};
+		this.codons.aag = {protein: this.proteins.lys};
+		this.codons.aug = {protein: this.proteins.met, start: true};
+		this.codons.uuc = {protein: this.proteins.phe};
+		this.codons.uuu = {protein: this.proteins.phe};
+		this.codons.cca = {protein: this.proteins.pro};
+		this.codons.ccc = {protein: this.proteins.pro};
+		this.codons.ccg = {protein: this.proteins.pro};
+		this.codons.ccu = {protein: this.proteins.pro};
+		this.codons.agc = {protein: this.proteins.ser};
+		this.codons.agu = {protein: this.proteins.ser};
+		this.codons.uca = {protein: this.proteins.ser};
+		this.codons.ucc = {protein: this.proteins.ser};
+		this.codons.ucg = {protein: this.proteins.ser};
+		this.codons.ucu = {protein: this.proteins.ser};
+		this.codons.aca = {protein: this.proteins.thr};
+		this.codons.acc = {protein: this.proteins.thr};
+		this.codons.acg = {protein: this.proteins.thr};
+		this.codons.acu = {protein: this.proteins.thr};
+		this.codons.ugg = {protein: this.proteins.trp};
+		this.codons.uac = {protein: this.proteins.tyr};
+		this.codons.uau = {protein: this.proteins.tyr};
+		this.codons.gua = {protein: this.proteins.val};
+		this.codons.guc = {protein: this.proteins.val};
+		this.codons.gug = {protein: this.proteins.val, start: true};
+		this.codons.guu = {protein: this.proteins.val};
+		this.codons.uaa = {protein: null, stop: true};
+		this.codons.uag = {protein: null, stop: true};
+		this.codons.uga = {protein: null, stop: true};
+	}
+
+	initLives()
+	{
 		for (let n = 0; n < this.lives.length; n++) {
-			let r = Math.floor(Math.random() * 255);
-			let g = Math.floor(Math.random() * 255);
-			let b = Math.floor(Math.random() * 255);
-			this.lives[n] = {
-				position: {x: Math.random() * this.fieldSize, y: Math.random() * this.fieldSize},
-				direction: Math.random() * 2.0 * Math.PI,
-				type: Math.floor(Math.random() * this.lifeTypes),
-				color: "rgb(" + r + "," + g + "," + b + ")",
-				viewRPosition: Math.random() * 2.0 * Math.PI,
-				viewLPosition: Math.random() * 2.0 * Math.PI,
-				viewAngle: (0.1 + Math.random()) * 0.91 * Math.PI,
-				viewRange: Math.random() * this.lifeViewRangeMax,
-				gene: []
-			};
-			this.lives[n].gene[0] = this.lives[n].type;
-			this.lives[n].gene[1] = r;
-			this.lives[n].gene[2] = g;
-			this.lives[n].gene[3] = b;
-			this.lives[n].gene[4] = this.lives[n].viewRPosition;
-			this.lives[n].gene[5] = this.lives[n].viewLPosition;
-			this.lives[n].gene[6] = this.lives[n].viewAngle;
-			this.lives[n].gene[7] = this.lives[n].viewRange;
+			let codeLength = Math.ceil(Math.random() * 90);
+			let rna;
+			for (let i = 0; i < codeLength; i++) {
+				let tmp = Math.floor(Math.random() * 4.0);
+				rna.push(this.nucleotide[tmp]);
+			}
+			let protein = this.polymerase(rna);
+			this.lives[n] = this.ribosome(protein);
+//			this.lives[n] = {
+//				position: {x: Math.random() * this.fieldSize, y: Math.random() * this.fieldSize},
+//				direction: Math.random() * 2.0 * Math.PI,
+//				color: "rgb(" + r + "," + g + "," + b + ")",
+//				viewRPosition: Math.random() * 2.0 * Math.PI,
+//				viewLPosition: Math.random() * 2.0 * Math.PI,
+//				viewAngle: (0.1 + Math.random()) * 0.91 * Math.PI,
+//				viewRange: Math.random() * this.lifeViewRangeMax,
+//				gene: [],
+//				attacked: false
+//			};
+			let geneLength = Math.random() * 10;
+			for (k = 0; k < geneLength; k++) {
+				this.lives[n].gene[n] = Math.floor(10 * Math.random);
+			}
 		}
 	}
 
@@ -252,6 +380,9 @@ class Life2DSimulator {
 	AI()
 	{
 		for (let n = 0; n < this.lives.length; n++) {
+			this.lives[n].attacked = false;
+		}
+		for (let n = 0; n < this.lives.length; n++) {
 			let dir = this.lives[n].direction;
 			let dir_next = 0;
 			let v = Math.random() * 0.5;
@@ -277,6 +408,9 @@ class Life2DSimulator {
 				}
 				let dist = Math.sqrt(d.x * d.x + d.y * d.y);
 				let dir_tmp = Math.atan2(d.y, d.x);
+				if (dist < this.lives[n].size + this.lives[k].size) {
+					this.mutualAction(this.lives[n], this.lives[k]);
+				}
 				if (dist < this.lives[n].viewRange &&
 				    Math.abs(this.circSub(dir_tmp, dir)) < this.lives[n].viewAngle * 0.5) {
 					dir_next += Math.sign(this.circSub(dir, dir_tmp)) * Math.random() * 0.3;
@@ -289,6 +423,78 @@ class Life2DSimulator {
 				this.lives[n].direction -= 2.0 * Math.PI;
 			}
 		}
+	}
+
+	mutualAction(main, target)
+	{
+		if (main.gene.length == target.gene.length) { // Can make new life
+			this.polymerase(main.gene, target.gene);
+		}
+	}
+
+	crossRNA(gene)
+	{
+		// Something like real life,
+		// RNAs will cross with another one and concatenate them into the one string.
+		// 3-length codons make proteins which extend or diminish life's capacity.
+		// Pre-determined proteins will produced by ribosome
+		// and then the new life will be sentenced whether it will born or die.
+	}
+
+	polymerase(gene)
+	{
+	}
+
+	ribosome(protein)
+	{
+		let life = {
+			position: {x: 0, y: 0},
+			direction: 0,
+			color: null,
+			viewRPosition: 0,
+			viewLPosition: 0,
+			viewAngle: 0,
+			viewRange: 0,
+			gene: [],
+			attacked: false
+		};
+		let R = 0;
+		let G = 0;
+		let B = 0;
+		for (let n = 0; n < protein.length; n++) {
+			R += protein[n].R;
+			G += protein[n].G;
+			B += protein[n].B;
+			life.viewRPosition += protein[n].viewRPosition;
+			life.viewLPosition += protein[n].viewLPosition;
+			life.viewAngle += protein[n].viewAngle;
+			life.viewRange += protein[n].viewRange;
+		}
+		life.color = "rgb(" +
+		    (R > 255 ? 255 : R) + "," +
+		    (G > 255 ? 255 : G) + "," +
+		    (B > 255 ? 255 : B) + ")";
+		if (life.viewRPosition < -Math.PI) {
+			life.viewRPosition = -Math.PI;
+		} else if (life.viewRPosition > Math.PI) {
+			life.viewRPosition = Math.PI;
+		}
+		if (life.viewLPosition < -Math.PI) {
+			life.viewLPosition = -Math.PI;
+		} else if (life.viewLPosition > Math.PI) {
+			life.viewLPosition = Math.PI;
+		}
+		if (life.viewLPosition < 0) {
+			life.viewLPosition = 0;
+		} else if (life.viewLPosition > this.lifeViewAngleMax) {
+			life.viewLPosition = this.lifeViewAngleMax;
+		}
+		if (life.viewRange < 0) {
+			life.viewRange = 0;
+		} else if (life.viewRange > this.lifeViewRangeMax) {
+			life.viewRange = this.lifeViewRangeMax;
+		}
+		return life;
 	}
 
 	circSub(a, b)
@@ -385,6 +591,7 @@ class Life2DSimulator {
 		for (let n = 0; n < this.lives.length; n++) {
 			// Height along with field level
 			let h = this.bilinear(this.lives[n].position.x, this.lives[n].position.y);
+			// Draw life body
 			let xyz = this.calcView(
 			    this.lives[n].position.x,
 			    this.lives[n].position.y,
@@ -396,10 +603,10 @@ class Life2DSimulator {
 			    xyz.z <= 0) {
 				continue;
 			}
-			this.context.strokeStyle = this.lives[n].color;
+			this.context.fillStyle = this.lives[n].color;
 			this.context.beginPath();
-			this.context.arc(xyz.x, xyz.y, 2, 0, 2 * Math.PI);
-			this.context.stroke();
+			this.context.arc(xyz.x, xyz.y, 1.0 * this.camera.F / (this.zScale * xyz.z), 0, 2 * Math.PI);
+			this.context.fill();
 			// Draw life's direction
 			let dir = this.lives[n].direction;
 			let xyz_tmp = this.calcView(
