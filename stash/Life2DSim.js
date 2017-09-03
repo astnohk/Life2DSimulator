@@ -1,7 +1,7 @@
 // The code written in BSD/KNF indent style
 "use strict";
 
-class Life2DProteins {
+class Life2DAminos {
 	constructor() {
 		this.R = 0;
 		this.G = 0;
@@ -52,7 +52,7 @@ class Life2DSimulator {
 		this.fieldDispPos = new Array(this.fieldSize * this.fieldSize);
 		this.lives = new Array(this.lifeNum);
 		this.nucleotide = ['a', 'c', 'g', 'u'];
-		this.proteins = null;
+		this.aminos = null;
 		this.codons = null;
 
 		this.XYZ_absolute = {
@@ -97,7 +97,7 @@ class Life2DSimulator {
 
 		// Set initial field
 		this.initField();
-		this.initProteins();
+		this.initAminos();
 		this.initLives();
 
 		// Reset display offset
@@ -157,7 +157,7 @@ class Life2DSimulator {
 		this.startstopButton.addEventListener("touchstart", function (e) { e.preventDefault(); e.currentTarget.rootInstance.startstop(e); }, false);
 		this.rootWindow.appendChild(this.startstopButton);
 
-		var lifeNumChangerLabel = document.createElement("div");
+		let lifeNumChangerLabel = document.createElement("div");
 		lifeNumChangerLabel.innerHTML = "life";
 		lifeNumChangerLabel.id = "Life2DSimulatorLifeNumChangerLabel";
 		lifeNumChangerLabel.className = "Life2DSimulatorInputLabel";
@@ -182,124 +182,126 @@ class Life2DSimulator {
 		}
 	}
 
-	initProteins()
+	initAminos()
 	{
-		// Proteins
-		this.proteins.ala = new Life2DProteins();
-		this.proteins.arg = new Life2DProteins();
-		this.proteins.asn = new Life2DProteins();
-		this.proteins.asp = new Life2DProteins();
-		this.proteins.cys = new Life2DProteins();
-		this.proteins.gln = new Life2DProteins();
-		this.proteins.glu = new Life2DProteins();
-		this.proteins.gly = new Life2DProteins();
-		this.proteins.his = new Life2DProteins();
-		this.proteins.ile = new Life2DProteins();
-		this.proteins.leu = new Life2DProteins();
-		this.proteins.lys = new Life2DProteins();
-		this.proteins.met = new Life2DProteins();
-		this.proteins.phe = new Life2DProteins();
-		this.proteins.thr = new Life2DProteins();
-		this.proteins.trp = new Life2DProteins();
-		this.proteins.tyr = new Life2DProteins();
-		this.proteins.val = new Life2DProteins();
-		this.proteins.ser = new Life2DProteins();
-		this.proteins.pro = new Life2DProteins();
-		this.proteins.ala.viewRPosition = 0.02 * Math.PI;
-		this.proteins.arg.viewLPosition = 0.02 * Math.PI;
-		this.proteins.asn.viewAngle = 0.02 * Math.PI;
-		this.proteins.asp.viewRange = 10.0;
-		this.proteins.cys.viewRPosition = -0.02 * Math.PI;
-		this.proteins.gln.viewLPosition = -0.02 * Math.PI;
-		this.proteins.glu.viewAngle = -0.02 * Math.PI;
-		this.proteins.gly.viewRange = -3.0;
-		this.proteins.his.R = 10;
-		this.proteins.ile.G = 10;
-		this.proteins.leu.B = 10;
-		this.proteins.lys.R = 3;
-		this.proteins.met.G = 3;
-		this.proteins.phe.B = 3;
-		this.proteins.pro.viewAngle = 0.01 * Math.PI;
-		this.proteins.ser.viewRange = 5.0;
-		this.proteins.thr.viewRPosition = 0.01 * Math.PI;
-		this.proteins.trp.viewLPosition = 0.01 * Math.PI;
-		this.proteins.tyr.viewAngle = 0.01 * Math.PI;
-		this.proteins.val.viewRange = 1.0;
+		// Aminos
+		this.aminos = new Object();
+		this.aminos.ala = new Life2DAminos();
+		this.aminos.arg = new Life2DAminos();
+		this.aminos.asn = new Life2DAminos();
+		this.aminos.asp = new Life2DAminos();
+		this.aminos.cys = new Life2DAminos();
+		this.aminos.gln = new Life2DAminos();
+		this.aminos.glu = new Life2DAminos();
+		this.aminos.gly = new Life2DAminos();
+		this.aminos.his = new Life2DAminos();
+		this.aminos.ile = new Life2DAminos();
+		this.aminos.leu = new Life2DAminos();
+		this.aminos.lys = new Life2DAminos();
+		this.aminos.met = new Life2DAminos();
+		this.aminos.phe = new Life2DAminos();
+		this.aminos.thr = new Life2DAminos();
+		this.aminos.trp = new Life2DAminos();
+		this.aminos.tyr = new Life2DAminos();
+		this.aminos.val = new Life2DAminos();
+		this.aminos.ser = new Life2DAminos();
+		this.aminos.pro = new Life2DAminos();
+		this.aminos.ala.viewRPosition = 0.02 * Math.PI;
+		this.aminos.arg.viewLPosition = 0.02 * Math.PI;
+		this.aminos.asn.viewAngle = 0.02 * Math.PI;
+		this.aminos.asp.viewRange = 10.0;
+		this.aminos.cys.viewRPosition = -0.02 * Math.PI;
+		this.aminos.gln.viewLPosition = -0.02 * Math.PI;
+		this.aminos.glu.viewAngle = -0.02 * Math.PI;
+		this.aminos.gly.viewRange = -3.0;
+		this.aminos.his.R = 10;
+		this.aminos.ile.G = 10;
+		this.aminos.leu.B = 10;
+		this.aminos.lys.R = 3;
+		this.aminos.met.G = 3;
+		this.aminos.phe.B = 3;
+		this.aminos.pro.viewAngle = 0.01 * Math.PI;
+		this.aminos.ser.viewRange = 5.0;
+		this.aminos.thr.viewRPosition = 0.01 * Math.PI;
+		this.aminos.trp.viewLPosition = 0.01 * Math.PI;
+		this.aminos.tyr.viewAngle = 0.01 * Math.PI;
+		this.aminos.val.viewRange = 1.0;
 		// Codons
-		this.codons.gca = {protein: this.proteins.ala};
-		this.codons.gcc = {protein: this.proteins.ala};
-		this.codons.gcg = {protein: this.proteins.ala};
-		this.codons.gcu = {protein: this.proteins.ala};
-		this.codons.aga = {protein: this.proteins.arg};
-		this.codons.agg = {protein: this.proteins.arg};
-		this.codons.cga = {protein: this.proteins.arg};
-		this.codons.cgc = {protein: this.proteins.arg};
-		this.codons.cgg = {protein: this.proteins.arg};
-		this.codons.cgu = {protein: this.proteins.arg};
-		this.codons.aac = {protein: this.proteins.asn};
-		this.codons.aau = {protein: this.proteins.asn};
-		this.codons.gac = {protein: this.proteins.asp};
-		this.codons.gau = {protein: this.proteins.asp};
-		this.codons.ugc = {protein: this.proteins.cys};
-		this.codons.ugu = {protein: this.proteins.cys};
-		this.codons.caa = {protein: this.proteins.gln};
-		this.codons.cag = {protein: this.proteins.gln};
-		this.codons.gaa = {protein: this.proteins.glu};
-		this.codons.gag = {protein: this.proteins.glu};
-		this.codons.gga = {protein: this.proteins.gly};
-		this.codons.ggc = {protein: this.proteins.gly};
-		this.codons.ggg = {protein: this.proteins.gly};
-		this.codons.ggu = {protein: this.proteins.gly};
-		this.codons.cac = {protein: this.proteins.his};
-		this.codons.cau = {protein: this.proteins.his};
-		this.codons.aua = {protein: this.proteins.ile, start: true};
-		this.codons.auc = {protein: this.proteins.ile};
-		this.codons.auu = {protein: this.proteins.ile};
-		this.codons.cua = {protein: this.proteins.leu};
-		this.codons.cuc = {protein: this.proteins.leu};
-		this.codons.cug = {protein: this.proteins.leu};
-		this.codons.cuu = {protein: this.proteins.leu};
-		this.codons.uua = {protein: this.proteins.leu};
-		this.codons.uug = {protein: this.proteins.leu};
-		this.codons.aaa = {protein: this.proteins.lys};
-		this.codons.aag = {protein: this.proteins.lys};
-		this.codons.aug = {protein: this.proteins.met, start: true};
-		this.codons.uuc = {protein: this.proteins.phe};
-		this.codons.uuu = {protein: this.proteins.phe};
-		this.codons.cca = {protein: this.proteins.pro};
-		this.codons.ccc = {protein: this.proteins.pro};
-		this.codons.ccg = {protein: this.proteins.pro};
-		this.codons.ccu = {protein: this.proteins.pro};
-		this.codons.agc = {protein: this.proteins.ser};
-		this.codons.agu = {protein: this.proteins.ser};
-		this.codons.uca = {protein: this.proteins.ser};
-		this.codons.ucc = {protein: this.proteins.ser};
-		this.codons.ucg = {protein: this.proteins.ser};
-		this.codons.ucu = {protein: this.proteins.ser};
-		this.codons.aca = {protein: this.proteins.thr};
-		this.codons.acc = {protein: this.proteins.thr};
-		this.codons.acg = {protein: this.proteins.thr};
-		this.codons.acu = {protein: this.proteins.thr};
-		this.codons.ugg = {protein: this.proteins.trp};
-		this.codons.uac = {protein: this.proteins.tyr};
-		this.codons.uau = {protein: this.proteins.tyr};
-		this.codons.gua = {protein: this.proteins.val};
-		this.codons.guc = {protein: this.proteins.val};
-		this.codons.gug = {protein: this.proteins.val, start: true};
-		this.codons.guu = {protein: this.proteins.val};
-		this.codons.uaa = {protein: null, stop: true};
-		this.codons.uag = {protein: null, stop: true};
-		this.codons.uga = {protein: null, stop: true};
+		this.codons = new Object();
+		this.codons.gca = {amino: this.aminos.ala, start: false, stop: false};
+		this.codons.gcc = {amino: this.aminos.ala, start: false, stop: false};
+		this.codons.gcg = {amino: this.aminos.ala, start: false, stop: false};
+		this.codons.gcu = {amino: this.aminos.ala, start: false, stop: false};
+		this.codons.aga = {amino: this.aminos.arg, start: false, stop: false};
+		this.codons.agg = {amino: this.aminos.arg, start: false, stop: false};
+		this.codons.cga = {amino: this.aminos.arg, start: false, stop: false};
+		this.codons.cgc = {amino: this.aminos.arg, start: false, stop: false};
+		this.codons.cgg = {amino: this.aminos.arg, start: false, stop: false};
+		this.codons.cgu = {amino: this.aminos.arg, start: false, stop: false};
+		this.codons.aac = {amino: this.aminos.asn, start: false, stop: false};
+		this.codons.aau = {amino: this.aminos.asn, start: false, stop: false};
+		this.codons.gac = {amino: this.aminos.asp, start: false, stop: false};
+		this.codons.gau = {amino: this.aminos.asp, start: false, stop: false};
+		this.codons.ugc = {amino: this.aminos.cys, start: false, stop: false};
+		this.codons.ugu = {amino: this.aminos.cys, start: false, stop: false};
+		this.codons.caa = {amino: this.aminos.gln, start: false, stop: false};
+		this.codons.cag = {amino: this.aminos.gln, start: false, stop: false};
+		this.codons.gaa = {amino: this.aminos.glu, start: false, stop: false};
+		this.codons.gag = {amino: this.aminos.glu, start: false, stop: false};
+		this.codons.gga = {amino: this.aminos.gly, start: false, stop: false};
+		this.codons.ggc = {amino: this.aminos.gly, start: false, stop: false};
+		this.codons.ggg = {amino: this.aminos.gly, start: false, stop: false};
+		this.codons.ggu = {amino: this.aminos.gly, start: false, stop: false};
+		this.codons.cac = {amino: this.aminos.his, start: false, stop: false};
+		this.codons.cau = {amino: this.aminos.his, start: false, stop: false};
+		this.codons.aua = {amino: this.aminos.ile, start: true, stop: false};
+		this.codons.auc = {amino: this.aminos.ile, start: false, stop: false};
+		this.codons.auu = {amino: this.aminos.ile, start: false, stop: false};
+		this.codons.cua = {amino: this.aminos.leu, start: false, stop: false};
+		this.codons.cuc = {amino: this.aminos.leu, start: false, stop: false};
+		this.codons.cug = {amino: this.aminos.leu, start: false, stop: false};
+		this.codons.cuu = {amino: this.aminos.leu, start: false, stop: false};
+		this.codons.uua = {amino: this.aminos.leu, start: false, stop: false};
+		this.codons.uug = {amino: this.aminos.leu, start: false, stop: false};
+		this.codons.aaa = {amino: this.aminos.lys, start: false, stop: false};
+		this.codons.aag = {amino: this.aminos.lys, start: false, stop: false};
+		this.codons.aug = {amino: this.aminos.met, start: true, stop: false};
+		this.codons.uuc = {amino: this.aminos.phe, start: false, stop: false};
+		this.codons.uuu = {amino: this.aminos.phe, start: false, stop: false};
+		this.codons.cca = {amino: this.aminos.pro, start: false, stop: false};
+		this.codons.ccc = {amino: this.aminos.pro, start: false, stop: false};
+		this.codons.ccg = {amino: this.aminos.pro, start: false, stop: false};
+		this.codons.ccu = {amino: this.aminos.pro, start: false, stop: false};
+		this.codons.agc = {amino: this.aminos.ser, start: false, stop: false};
+		this.codons.agu = {amino: this.aminos.ser, start: false, stop: false};
+		this.codons.uca = {amino: this.aminos.ser, start: false, stop: false};
+		this.codons.ucc = {amino: this.aminos.ser, start: false, stop: false};
+		this.codons.ucg = {amino: this.aminos.ser, start: false, stop: false};
+		this.codons.ucu = {amino: this.aminos.ser, start: false, stop: false};
+		this.codons.aca = {amino: this.aminos.thr, start: false, stop: false};
+		this.codons.acc = {amino: this.aminos.thr, start: false, stop: false};
+		this.codons.acg = {amino: this.aminos.thr, start: false, stop: false};
+		this.codons.acu = {amino: this.aminos.thr, start: false, stop: false};
+		this.codons.ugg = {amino: this.aminos.trp, start: false, stop: false};
+		this.codons.uac = {amino: this.aminos.tyr, start: false, stop: false};
+		this.codons.uau = {amino: this.aminos.tyr, start: false, stop: false};
+		this.codons.gua = {amino: this.aminos.val, start: false, stop: false};
+		this.codons.guc = {amino: this.aminos.val, start: false, stop: false};
+		this.codons.gug = {amino: this.aminos.val, start: true, stop: false};
+		this.codons.guu = {amino: this.aminos.val, start: false, stop: false};
+		this.codons.uaa = {amino: null, start: false, stop: true};
+		this.codons.uag = {amino: null, start: false, stop: true};
+		this.codons.uga = {amino: null, start: false, stop: true};
 	}
 
 	initLives()
 	{
 		for (let n = 0; n < this.lives.length; n++) {
-			let codeLength = Math.ceil(Math.random() * 90);
-			let rna;
+			let codeLength = Math.ceil(Math.random() * 240);
+			let rna = "";
 			for (let i = 0; i < codeLength; i++) {
 				let tmp = Math.floor(Math.random() * 4.0);
-				rna.push(this.nucleotide[tmp]);
+				rna = rna.concat(this.nucleotide[tmp]);
 			}
 			let protein = this.polymerase(rna);
 			this.lives[n] = this.ribosome(protein);
@@ -315,7 +317,7 @@ class Life2DSimulator {
 //				attacked: false
 //			};
 			let geneLength = Math.random() * 10;
-			for (k = 0; k < geneLength; k++) {
+			for (let k = 0; k < geneLength; k++) {
 				this.lives[n].gene[n] = Math.floor(10 * Math.random);
 			}
 		}
@@ -436,16 +438,45 @@ class Life2DSimulator {
 	{
 		// Something like real life,
 		// RNAs will cross with another one and concatenate them into the one string.
-		// 3-length codons make proteins which extend or diminish life's capacity.
-		// Pre-determined proteins will produced by ribosome
+		// 3-length codons make aminos which extend or diminish life's capacity.
+		// Pre-determined aminos will produced by ribosome
 		// and then the new life will be sentenced whether it will born or die.
 	}
 
 	polymerase(gene)
 	{
+		let s = 0;
+		let proteins = [];
+		let p = 0;
+		while (s < gene.length - 2) {
+			let start = false;
+			let i = s;
+			for (; i < gene.length - 2; i++) {
+				let codon = gene.slice(i, i + 3);
+				if (this.codons[codon].start) {
+					start = true;
+					break;
+				}
+			}
+			s = i + 2;
+			if (start) {
+				proteins[p] = [];
+				let n = i;
+				for (; n < gene.length - 2; n += 3) {
+					let codon = gene.slice(n, n + 3);
+					if (this.codons[codon].stop) {
+						break;
+					}
+					proteins[p].push(this.codons[codon].amino);
+				}
+				s = n + 2;
+				p++;
+			}
+		}
+		return proteins;
 	}
 
-	ribosome(protein)
+	ribosome(proteins)
 	{
 		let life = {
 			position: {x: 0, y: 0},
@@ -461,38 +492,40 @@ class Life2DSimulator {
 		let R = 0;
 		let G = 0;
 		let B = 0;
-		for (let n = 0; n < protein.length; n++) {
-			R += protein[n].R;
-			G += protein[n].G;
-			B += protein[n].B;
-			life.viewRPosition += protein[n].viewRPosition;
-			life.viewLPosition += protein[n].viewLPosition;
-			life.viewAngle += protein[n].viewAngle;
-			life.viewRange += protein[n].viewRange;
-		}
-		life.color = "rgb(" +
-		    (R > 255 ? 255 : R) + "," +
-		    (G > 255 ? 255 : G) + "," +
-		    (B > 255 ? 255 : B) + ")";
-		if (life.viewRPosition < -Math.PI) {
-			life.viewRPosition = -Math.PI;
-		} else if (life.viewRPosition > Math.PI) {
-			life.viewRPosition = Math.PI;
-		}
-		if (life.viewLPosition < -Math.PI) {
-			life.viewLPosition = -Math.PI;
-		} else if (life.viewLPosition > Math.PI) {
-			life.viewLPosition = Math.PI;
-		}
-		if (life.viewLPosition < 0) {
-			life.viewLPosition = 0;
-		} else if (life.viewLPosition > this.lifeViewAngleMax) {
-			life.viewLPosition = this.lifeViewAngleMax;
-		}
-		if (life.viewRange < 0) {
-			life.viewRange = 0;
-		} else if (life.viewRange > this.lifeViewRangeMax) {
-			life.viewRange = this.lifeViewRangeMax;
+		for (let i = 0; i < proteins.length; i++) {
+			for (let n = 0; n < proteins[i].length; n++) {
+				R += proteins[i][n].R;
+				G += proteins[i][n].G;
+				B += proteins[i][n].B;
+				life.viewRPosition += proteins[i][n].viewRPosition;
+				life.viewLPosition += proteins[i][n].viewLPosition;
+				life.viewAngle += proteins[i][n].viewAngle;
+				life.viewRange += proteins[i][n].viewRange;
+			}
+			life.color = "rgb(" +
+			    (R > 255 ? 255 : R) + "," +
+			    (G > 255 ? 255 : G) + "," +
+			    (B > 255 ? 255 : B) + ")";
+			if (life.viewRPosition < -Math.PI) {
+				life.viewRPosition = -Math.PI;
+			} else if (life.viewRPosition > Math.PI) {
+				life.viewRPosition = Math.PI;
+			}
+			if (life.viewLPosition < -Math.PI) {
+				life.viewLPosition = -Math.PI;
+			} else if (life.viewLPosition > Math.PI) {
+				life.viewLPosition = Math.PI;
+			}
+			if (life.viewLPosition < 0) {
+				life.viewLPosition = 0;
+			} else if (life.viewLPosition > this.lifeViewAngleMax) {
+				life.viewLPosition = this.lifeViewAngleMax;
+			}
+			if (life.viewRange < 0) {
+				life.viewRange = 0;
+			} else if (life.viewRange > this.lifeViewRangeMax) {
+				life.viewRange = this.lifeViewRangeMax;
+			}
 		}
 		return life;
 	}
